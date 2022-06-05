@@ -1,6 +1,8 @@
 import * as express from 'express';
+import { Cat, CatType } from './app.model';
+
 const app: express.Express = express();
-const port: number = 3000;
+const port: number = 3001;
 
 app.get('/', (req: express.Request, res: express.Response) => {
   console.log('req', req);
@@ -11,6 +13,16 @@ app.get('/', (req: express.Request, res: express.Response) => {
     nation: 'korea',
     language: ['english', 'japaness', 'korean'],
   });
+});
+
+app.post('/test', (req: express.Request, res: express.Response) => {
+  res.send({
+    person: 'oliver',
+  });
+});
+
+app.get('/cats', (req: express.Request, res: express.Response) => {
+  res.send({ cats: Cat });
 });
 
 app.listen(port, () => {
