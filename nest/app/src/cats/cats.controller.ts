@@ -1,3 +1,4 @@
+import { PositiveIntPipe } from './../common/pipes/positiveInt.pipe';
 import { HttpExceptionFilter } from './../http-exception.filter';
 import { CatsService } from './cats.service';
 import {
@@ -5,6 +6,7 @@ import {
   Delete,
   Get,
   HttpException,
+  Logger,
   Param,
   ParseIntPipe,
   Patch,
@@ -16,7 +18,7 @@ import {
 // @UseFilters(HttpExceptionFilter)
 export class CatsController {
   constructor(private readonly catsService: CatsService) {}
-
+  private logger = new Logger('cats');
   @Get()
   // @UseFilters(HttpExceptionFilter)
   getAllCat() {
@@ -25,8 +27,8 @@ export class CatsController {
   }
 
   @Get(':id')
-  getOneCat(@Param('id', ParseIntPipe) param: number) {
-    console.log(param);
+  getOneCat(@Param('id', ParseIntPipe, PositiveIntPipe) param: number) {
+    this.logger.log(param);
     return 'one cat';
   }
 
