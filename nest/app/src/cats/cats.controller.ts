@@ -1,5 +1,5 @@
 import { PositiveIntPipe } from './../common/pipes/positiveInt.pipe';
-import { HttpExceptionFilter } from './../http-exception.filter';
+import { HttpExceptionFilter } from '../common/exceptions/http-exception.filter';
 import { CatsService } from './cats.service';
 import {
   Controller,
@@ -12,13 +12,16 @@ import {
   Patch,
   Put,
   UseFilters,
+  UseInterceptors,
 } from '@nestjs/common';
+import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 
 @Controller('cats')
+@UseInterceptors(SuccessInterceptor)
 // @UseFilters(HttpExceptionFilter)
 export class CatsController {
   constructor(private readonly catsService: CatsService) {}
-  private logger = new Logger('cats');
+  private logger = new Logger('CatsController');
   @Get()
   // @UseFilters(HttpExceptionFilter)
   getAllCat() {
@@ -28,8 +31,8 @@ export class CatsController {
 
   @Get(':id')
   getOneCat(@Param('id', ParseIntPipe, PositiveIntPipe) param: number) {
-    this.logger.log(param);
-    return 'one cat';
+    this.logger.log('controller-getOneCat');
+    return { cats: 'get one cat.' };
   }
 
   @Put(':id')
