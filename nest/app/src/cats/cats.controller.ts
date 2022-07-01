@@ -1,7 +1,9 @@
+import { CatReqeustDto } from './dto/cats.request.dto';
 import { PositiveIntPipe } from './../common/pipes/positiveInt.pipe';
 import { HttpExceptionFilter } from '../common/exceptions/http-exception.filter';
 import { CatsService } from './cats.service';
 import {
+  Body,
   Controller,
   Delete,
   Get,
@@ -10,6 +12,7 @@ import {
   Param,
   ParseIntPipe,
   Patch,
+  Post,
   Put,
   UseFilters,
   UseInterceptors,
@@ -22,31 +25,25 @@ import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor'
 export class CatsController {
   constructor(private readonly catsService: CatsService) {}
   private logger = new Logger('CatsController');
+
   @Get()
-  // @UseFilters(HttpExceptionFilter)
-  getAllCat() {
-    throw new HttpException('api is borken', 401);
-    return 'allCat';
+  getCurrentCat() {
+    return 'current cat';
   }
 
-  @Get(':id')
-  getOneCat(@Param('id', ParseIntPipe, PositiveIntPipe) param: number) {
-    this.logger.log('controller-getOneCat');
-    return { cats: 'get one cat.' };
+  @Post()
+  async signup(@Body() body: CatReqeustDto) {
+    this.logger.log('request-body:', body);
+    return await this.catsService.signUp(body);
   }
 
-  @Put(':id')
-  updateCat() {
-    return 'update cat';
+  @Post('login')
+  login() {
+    return 'login';
   }
 
-  @Patch(':id')
-  updatePartialCat() {
-    return;
-  }
-
-  @Delete(':id')
-  deleteOne() {
-    return 'delete cat';
+  @Post('upload/cats')
+  uploadCatImg() {
+    return 'uploadImg';
   }
 }

@@ -6,6 +6,7 @@ import { CatsModule } from './cats/cats.module';
 import { UsersModule } from './users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
+import mongoose from 'mongoose';
 
 @Module({
   imports: [
@@ -21,7 +22,9 @@ import { ConfigModule } from '@nestjs/config';
   providers: [AppService],
 })
 export class AppModule implements NestModule {
+  private readonly isDev = process.env.MODE === 'dev' ? true : false;
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(LoggerMiddleware).forRoutes('*');
+    mongoose.set('debug', this.isDev);
   }
 }
