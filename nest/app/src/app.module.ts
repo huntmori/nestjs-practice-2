@@ -11,7 +11,7 @@ import mongoose from 'mongoose';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({ isGlobal: true }),
     CatsModule,
     UsersModule,
     MongooseModule.forRoot(process.env.MONGODB_URI, {
